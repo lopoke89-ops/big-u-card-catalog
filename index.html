@@ -23,7 +23,7 @@ a { color:var(--cyan); text-decoration:none; } a:hover { text-decoration:underli
 .brand h1{ margin:0; font-size:1.24rem; line-height:1.1; }
 .brand p{ margin:.25rem 0 0; color:var(--muted); font-size:.9rem; }
 .filter-group { background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.015)); border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:16px; margin-bottom:16px; box-shadow:var(--shadow); }
-.filter-group h3 { margin:0 0 12px; font-size:.96rem; }
+.filter-group h2 { margin:0 0 12px; font-size:.96rem; }
 .label { font-size:.82rem; color:var(--muted); margin:10px 0 6px; display:block; }
 input[type="text"], input[type="number"], select { width:100%; border:1px solid var(--line); background:var(--bg2); color:var(--text); border-radius:12px; padding:12px; outline:none; }
 input::placeholder{ color:#7e92b6; }
@@ -81,23 +81,88 @@ tr:hover td{ background:rgba(255,255,255,.02); }
 .mobile-toggle { display:none; }
 @media (max-width:1080px){ .app{ grid-template-columns:1fr; } .sidebar{ position:fixed; left:0; top:0; bottom:0; width:min(88vw,360px); transform:translateX(-100%); transition:.25s ease; z-index:40; } .sidebar.open{ transform:translateX(0); } .main{ padding:18px; } .summary{ grid-template-columns:repeat(2,minmax(0,1fr)); } .mobile-toggle{ display:inline-flex; } }
 @media (max-width:640px){ .grid{ grid-template-columns:1fr; } .hero h2{ font-size:1.6rem; } .metrics{ grid-template-columns:1fr; } }
+
+/* Accessibility and mobile usability improvements (WCAG 2.2 AA target) */
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+.sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
+.skip-link { position:fixed; top:12px; left:12px; transform:translateY(-180%); padding:12px 16px; background:var(--yellow); color:#13203b; border-radius:10px; z-index:1200; font-weight:800; }
+.skip-link:focus { transform:translateY(0); }
+.brand-title { margin:0; font-size:1.24rem; font-weight:800; line-height:1.1; }
+.hero h1 { font-size:clamp(1.5rem,3vw,2rem); line-height:1.2; margin:0 0 8px; }
+.filter-hint { margin:0 0 12px; color:var(--muted); font-size:.82rem; line-height:1.5; }
+.range-fieldset { border:0; margin:10px 0 12px; padding:0; min-width:0; }
+.range-fieldset legend { font-size:.83rem; color:var(--muted); margin-bottom:8px; padding:0; }
+.range-fieldset .row2 > div { min-width:0; }
+input[type=checkbox] { width:18px; height:18px; min-width:18px; accent-color:var(--purple); }
+.checks label { min-height:40px; padding:5px 2px; cursor:pointer; }
+button, .card-actions a { min-height:44px; }
+button:not(.secondary) { color:#07152c; }
+button.secondary { color:#f1f5ff; }
+button:hover, .card-actions a:hover { filter:brightness(1.13); }
+.card-actions a, .card-actions button { display:inline-flex; justify-content:center; align-items:center; gap:5px; }
+.card-actions .no-link { display:inline-flex; align-items:center; justify-content:center; flex:1; color:var(--muted); font-size:.86rem; }
+button:disabled { cursor:not-allowed; opacity:.6; }
+input[type=text]:focus, input[type=number]:focus, select:focus { border-color:var(--cyan); }
+.view-toggle button[aria-pressed=true] { background:#23405e; color:#d9f9ff; border:2px solid var(--cyan); }
+.sidebar-backdrop { display:none; }
+.mobile-filter-header, .mobile-filter-footer { display:none; }
+.mobile-toggle { display:none; background:#203b58; color:#e5f7ff!important; border:2px solid var(--cyan); align-items:center; justify-content:center; gap:10px; min-height:48px; }
+.hero-card, .summary, .stat, .toolbar, .toolbar .right, .main, #results { min-width:0; }
+.grid { grid-template-columns:repeat(auto-fill, minmax(min(100%,280px),1fr)); }
+.table-wrap { max-width:100%; }
+.table-wrap:focus-visible { outline-offset: -4px; }
+.toolbar select { max-width:min(340px,100%); }
+@media (max-width:1080px) {
+  .sidebar { width:min(100vw,430px); height:100dvh; max-height:100dvh; padding:0 18px calc(100px + env(safe-area-inset-bottom)) 18px; transform:translateX(-105%); transition:transform .22s ease; visibility:hidden; pointer-events:none; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; z-index:1001; box-shadow:0 30px 80px rgba(0,0,0,.62); }
+  .sidebar.open { visibility:visible; pointer-events:auto; transform:translateX(0); }
+  .sidebar-backdrop.show { display:block; position:fixed; inset:0; background:rgba(3,6,16,.78); backdrop-filter:blur(3px); z-index:1000; }
+  .mobile-filter-header { display:flex; position:sticky; top:0; padding:calc(10px + env(safe-area-inset-top)) 0 12px; min-height:70px; align-items:center; justify-content:space-between; gap:12px; background:#0c1226; z-index:5; border-bottom:1px solid var(--line); margin-bottom:15px; }
+  .mobile-filter-header h2 { font-size:1.18rem; margin:0; }
+  .close-filters { display:flex; align-items:center; gap:9px; padding:9px 14px; min-height:48px; background:#253350; color:#fff!important; border:2px solid #9cbaf0; border-radius:12px; }
+  .close-filters span { font-size:1.65rem; line-height:1; }
+  .mobile-filter-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; position:fixed; bottom:0; left:0; right:0; z-index:7; padding:12px 18px calc(12px + env(safe-area-inset-bottom)); background:#111b30; border-top:1px solid var(--line); box-shadow:0 -8px 25px rgba(0,0,0,.35); }
+  .mobile-filter-footer span { color:#d4e5fc; font-size:.86rem; }
+  .mobile-filter-footer button { padding:12px 16px; min-height:48px; }
+  .mobile-toggle { display:inline-flex; margin:0 0 12px; }
+  .sidebar .brand { margin:0 0 18px; }
+  .toolbar .right { width:100%; }
+  .toolbar select { width:auto; flex:1 1 210px; }
+}
+@media (max-width:640px) {
+  .grid { grid-template-columns:minmax(0,1fr); }
+  .hero h1 { font-size:1.55rem; }
+  .toolbar .left { width:100%; }
+  .summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .stat { padding:14px; }
+  .stat strong { font-size:1.4rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { scroll-behavior:auto!important; transition-duration:.01ms!important; animation-duration:.01ms!important; }
+}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#results">Skip to card results</a>
+<div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 <div class="app">
-  <aside class="sidebar" id="sidebar">
-    <div class="brand"><div class="logo"></div><div><h1>Big U Card Catalog</h1><p>Dark-mode market browser • 60 cards • 12 players</p></div></div>
+  <aside class="sidebar" id="sidebar" aria-label="Card filters">
+    <div class="mobile-filter-header">
+      <h2 id="filterDialogTitle">Filter cards</h2>
+      <button id="closeFiltersBtn" type="button" class="close-filters" aria-label="Close filters"><span aria-hidden="true">×</span> Close</button>
+    </div>
+    <div class="brand"><div class="logo"></div><div><div class="brand-title">Big U Card Catalog</div><p>Dark-mode market browser • 60 cards • 12 players</p></div></div>
     <div class="filter-group">
-      <h3>Search & scope</h3>
-      <label class="label">Search cards</label>
+      <h2>Search & scope</h2>
+      <label class="label" for="searchInput">Search cards</label>
       <input id="searchInput" type="text" placeholder="Search player, set, variant, keyword..." />
-      <label class="label">Player</label>
+      <label class="label" for="playerSelect">Player</label>
       <select id="playerSelect"><option value="">All players</option><option value="Austin Reaves">Austin Reaves</option><option value="Jared McCain">Jared McCain</option><option value="T.J. McConnell">T.J. McConnell</option><option value="Dillon Brooks">Dillon Brooks</option><option value="Kevin Durant">Kevin Durant</option><option value="Ty Jerome">Ty Jerome</option><option value="Nickeil Alexander-Walker">Nickeil Alexander-Walker</option><option value="Pascal Siakam">Pascal Siakam</option><option value="Josh Hart">Josh Hart</option><option value="Tyler Herro">Tyler Herro</option><option value="De'Aaron Fox">De'Aaron Fox</option><option value="Brandin Podziemski">Brandin Podziemski</option></select>
-      <label class="label">Card year</label>
+      <label class="label" for="yearSelect">Card year</label>
       <select id="yearSelect"><option value="">All years</option><option value="2007–08">2007–08</option><option value="2016–17">2016–17</option><option value="2017–18">2017–18</option><option value="2019–20">2019–20</option><option value="2021–22">2021–22</option><option value="2023–24">2023–24</option><option value="2024–25">2024–25</option><option value="2025–26">2025–26</option><option value="2026–27">2026–27</option></select>
     </div>
     <div class="filter-group">
-      <h3>Card type filters</h3>
+      <h2>Card type filters</h2>
+      <p class="filter-hint">Selecting several types shows cards that match all selected types.</p>
       <div class="checks">
         <label><input type="checkbox" id="rookieOnly"> Rookie</label>
         <label><input type="checkbox" id="autoOnly"> Autograph</label>
@@ -108,30 +173,46 @@ tr:hover td{ background:rgba(255,255,255,.02); }
       </div>
     </div>
     <div class="filter-group">
-      <h3>Market data filters</h3>
+      <h2>Market data filters</h2>
       <div class="checks" style="grid-template-columns:1fr;">
         <label><input type="checkbox" id="verifiedOnly"> Only cards with verified market data</label>
         <label><input type="checkbox" id="soldOnly"> Only cards with median sold data</label>
         <label><input type="checkbox" id="askOnly"> Only cards with median asking data</label>
         <label><input type="checkbox" id="bargainsOnly"> Only bargain cards (premium below 0%)</label>
       </div>
-      <label class="label">Median asking price ($)</label>
-      <div class="row2"><input id="askMin" type="number" step="0.01" placeholder="Min"><input id="askMax" type="number" step="0.01" placeholder="Max"></div>
-      <label class="label">Median sold price ($)</label>
-      <div class="row2"><input id="soldMin" type="number" step="0.01" placeholder="Min"><input id="soldMax" type="number" step="0.01" placeholder="Max"></div>
-      <label class="label">Asking premium (%)</label>
-      <div class="row2"><input id="premiumMin" type="number" step="0.1" placeholder="Min"><input id="premiumMax" type="number" step="0.1" placeholder="Max"></div>
+      <fieldset class="range-fieldset"><legend>Median asking price ($)</legend>
+        <div class="row2">
+          <div><label class="sr-only" for="askMin">Minimum Median asking price ($)</label><input id="askMin" type="number" step="0.01" inputmode="decimal" placeholder="Min"></div>
+          <div><label class="sr-only" for="askMax">Maximum Median asking price ($)</label><input id="askMax" type="number" step="0.01" inputmode="decimal" placeholder="Max"></div>
+        </div>
+      </fieldset>
+      <fieldset class="range-fieldset"><legend>Median sold price ($)</legend>
+        <div class="row2">
+          <div><label class="sr-only" for="soldMin">Minimum Median sold price ($)</label><input id="soldMin" type="number" step="0.01" inputmode="decimal" placeholder="Min"></div>
+          <div><label class="sr-only" for="soldMax">Maximum Median sold price ($)</label><input id="soldMax" type="number" step="0.01" inputmode="decimal" placeholder="Max"></div>
+        </div>
+      </fieldset>
+      <fieldset class="range-fieldset"><legend>Asking premium (%)</legend>
+        <div class="row2">
+          <div><label class="sr-only" for="premiumMin">Minimum Asking premium (%)</label><input id="premiumMin" type="number" step="0.1" inputmode="decimal" placeholder="Min"></div>
+          <div><label class="sr-only" for="premiumMax">Maximum Asking premium (%)</label><input id="premiumMax" type="number" step="0.1" inputmode="decimal" placeholder="Max"></div>
+        </div>
+      </fieldset>
     </div>
     <div class="filter-group">
-      <h3>Actions</h3>
+      <h2>Actions</h2>
       <div class="btns"><button id="resetBtn">Reset filters</button><button class="secondary" id="exportBtn">Export filtered CSV</button></div>
     </div>
+    <div class="mobile-filter-footer">
+      <span id="drawerCount" role="status" aria-live="polite">60 matching cards</span>
+      <button type="button" id="applyFiltersBtn">Show results</button>
+    </div>
   </aside>
-  <main class="main">
+  <main class="main" id="mainContent">
     <section class="hero">
       <div class="hero-card">
-        <div class="chip mobile-toggle" id="mobileToggle">☰ Filters</div>
-        <h2>Basketball Card Market Browser</h2>
+        <button type="button" class="mobile-toggle" id="mobileToggle" aria-controls="sidebar" aria-expanded="false" aria-haspopup="dialog"><span aria-hidden="true">☰</span> Filters</button>
+        <h1>Basketball Card Market Browser</h1>
         <p>An easier, more visual way to use your catalog. Browse by player, hunt rookies / autos / numbered cards, compare median asking vs median sold, and spot overpriced listings or bargains fast.</p>
         <div class="hero-actions"><div class="chip">Dark theme</div><div class="chip">Advanced filters</div><div class="chip">Grid + table views</div><div class="chip">CSV export</div></div>
       </div>
@@ -139,12 +220,13 @@ tr:hover td{ background:rgba(255,255,255,.02); }
         <div class="stat"><small>Matching cards</small><strong id="statCount">0</strong><span id="statPlayers" class="footer-note"></span></div>
         <div class="stat"><small>With sold data</small><strong id="statSold">0</strong><span class="footer-note">Exact median sold verified</span></div>
         <div class="stat"><small>With asking data</small><strong id="statAsking">0</strong><span class="footer-note">Active listing median verified</span></div>
-        <div class="stat"><small>Bargains found</small><strong id="statBargains">0</strong><span class="footer-note">Ask premium below 0%</span></div>
+        <div class="stat"><small>Below-median asks</small><strong id="statBargains">0</strong><span class="footer-note">Ask premium below 0%</span></div>
       </div>
     </section>
     <section class="toolbar">
-      <div class="left"><div class="chip" id="resultChip">0 results</div><div class="chip">Source: updated .docx catalog</div></div>
+      <div class="left"><div class="chip" id="resultChip" role="status" aria-live="polite" aria-atomic="true">0 results</div><div class="chip">Pricing snapshot · Nov 10, 2026</div></div>
       <div class="right">
+        <label for="sortSelect" class="sr-only">Sort cards</label>
         <select id="sortSelect">
           <option value="player-asc">Sort: Player A–Z</option>
           <option value="player-desc">Sort: Player Z–A</option>
@@ -156,10 +238,14 @@ tr:hover td{ background:rgba(255,255,255,.02); }
           <option value="premium-desc">Premium high → low</option>
           <option value="premium-asc">Premium low → high</option>
         </select>
-        <div class="view-toggle btns"><button class="secondary" id="gridBtn">Grid</button><button class="secondary" id="tableBtn">Table</button></div>
+        <div class="view-toggle btns" role="group" aria-label="View cards as"><button type="button" class="secondary" id="gridBtn" aria-pressed="true">Grid</button><button type="button" class="secondary" id="tableBtn" aria-pressed="false">Table</button></div>
       </div>
     </section>
-    <div id="content"></div>
+    <section id="results" aria-labelledby="resultsTitle" tabindex="-1">
+      <h2 id="resultsTitle" class="sr-only">Card results</h2>
+      <div id="content"></div>
+    </section>
+    <div id="copyStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
     <p class="footer-note">Note: this website preserves the catalog’s card entries and verified summary stats where available. Some entries remain marked N/V because exact-match sold or asking data was not verified. Asking prices exclude shipping, taxes, and fees.</p>
   </main>
 </div>
@@ -266,23 +352,23 @@ function cardHtml(card) {
       <div class="metric"><span>Asking premium</span><strong class="premium ${premiumClass(card.askPremium)}">${fmtPct(card.askPremium)}</strong><small>${card.askPremium == null ? 'Requires both asking and sold medians' : (card.askPremium < 0 ? 'Below recent sold median' : 'Above recent sold median')}</small></div>
     </div>
     <div class="card-actions">
-      ${card.sellerUrl ? `<a href="${card.sellerUrl}" target="_blank" rel="noopener">Open listing</a>` : `<button disabled style="opacity:.55;cursor:not-allowed;">No live link</button>`}
-      <button class="secondary copy-btn" data-copy="${escapeHtml(card.player + ' — ' + card.cardTitle)}">Copy title</button>
+      ${card.sellerUrl ? `<a href="${escapeHtml(card.sellerUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Open listing for ${escapeHtml(card.player + ' ' + card.cardTitle)} (new tab)">Open listing <span aria-hidden="true">↗</span></a>` : `<span class="no-link">No listing link</span>`}
+      <button type="button" class="secondary copy-btn" data-copy="${escapeHtml(card.player + ' — ' + card.cardTitle)}" aria-label="Copy title for ${escapeHtml(card.player + ' ' + card.cardTitle)}">Copy title</button>
     </div>
   </article>`;
 }
 function tableHtml(cards) {
   const rows = cards.map(card => `
     <tr>
-      <td><strong>${escapeHtml(card.player)}</strong><br><span style="color:var(--muted)">${escapeHtml(card.cardYear || card.rookieYear)}</span></td>
+      <th scope="row"><strong>${escapeHtml(card.player)}</strong><br><span style="color:var(--muted)">${escapeHtml(card.cardYear || card.rookieYear)}</span></th>
       <td>${escapeHtml(card.cardTitle)}<br><div class="badges" style="margin-top:8px">${badgeHtml(card)}</div></td>
       <td>${fmtMoney(card.originalAsk)}</td>
       <td>${fmtMoney(card.medianAsking)}${card.askingSample ? ` <span style="color:var(--muted)">(n=${card.askingSample})</span>` : ''}<br><span style="color:var(--muted)">${escapeHtml(card.askingRangeText)}</span></td>
       <td>${fmtMoney(card.medianSold)}${card.soldSample ? ` <span style="color:var(--muted)">(n=${card.soldSample})</span>` : ''}</td>
       <td class="premium ${premiumClass(card.askPremium)}">${fmtPct(card.askPremium)}</td>
-      <td>${card.sellerUrl ? `<a href="${card.sellerUrl}" target="_blank" rel="noopener">Open</a>` : '—'}</td>
+      <td>${card.sellerUrl ? `<a href="${escapeHtml(card.sellerUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Open listing for ${escapeHtml(card.player + ' ' + card.cardTitle)} (new tab)">Open <span aria-hidden="true">↗</span></a>` : '—'}</td>
     </tr>`).join('');
-  return `<div class="table-wrap"><table><thead><tr><th>Player</th><th>Card</th><th>Original ask</th><th>Median asking</th><th>Median sold</th><th>Premium</th><th>Link</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  return `<div class="table-wrap" role="region" aria-label="Scrollable card comparison table" tabindex="0"><table><caption class="sr-only">Filtered card listing and market price comparison</caption><thead><tr><th scope="col">Player</th><th scope="col">Card</th><th scope="col">Original ask</th><th scope="col">Median asking</th><th scope="col">Median sold</th><th scope="col">Premium</th><th scope="col">Link</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function updateSummary(cards) {
   const players = new Set(cards.map(c => c.player));
@@ -292,18 +378,35 @@ function updateSummary(cards) {
   byId('statAsking').textContent = cards.filter(c => c.medianAsking != null).length;
   byId('statBargains').textContent = cards.filter(c => c.askPremium != null && c.askPremium < 0).length;
   byId('resultChip').textContent = `${cards.length} result${cards.length===1?'':'s'}`;
+  byId('drawerCount').textContent = `${cards.length} matching card${cards.length===1?'':'s'}`;
 }
-function bindCopyButtons(){ document.querySelectorAll('.copy-btn').forEach(btn => btn.onclick=()=>navigator.clipboard.writeText(btn.dataset.copy)); }
+function bindCopyButtons(){
+  document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(btn.dataset.copy);
+      byId('copyStatus').textContent = 'Copied card title: ' + btn.dataset.copy;
+      btn.textContent = 'Copied!';
+      window.setTimeout(() => { if (btn.isConnected) btn.textContent = 'Copy title'; }, 1800);
+    } catch (error) {
+      byId('copyStatus').textContent = 'Could not copy automatically. Please select and copy the card title.';
+      btn.textContent = 'Copy unavailable';
+    }
+  }));
+}
 function render() {
   const filters = getFilters();
   const filtered = sortCards(filterCards(allCards, filters), filters.sort);
   updateSummary(filtered);
   const content = byId('content');
+  byId('gridBtn').setAttribute('aria-pressed', String(currentView === 'grid'));
+  byId('tableBtn').setAttribute('aria-pressed', String(currentView === 'table'));
   if (!filtered.length) {
     content.innerHTML = '<div class="empty"><h3>No cards match these filters.</h3><p>Try widening your price ranges or unchecking some card-type filters.</p></div>';
     return;
   }
   content.innerHTML = currentView === 'grid' ? `<div class="grid">${filtered.map(cardHtml).join('')}</div>` : tableHtml(filtered);
+  byId('gridBtn').setAttribute('aria-pressed', String(currentView === 'grid'));
+  byId('tableBtn').setAttribute('aria-pressed', String(currentView === 'table'));
   bindCopyButtons();
 }
 function resetFilters() {
@@ -330,7 +433,90 @@ byId('resetBtn').addEventListener('click', resetFilters);
 byId('exportBtn').addEventListener('click', exportCsv);
 byId('gridBtn').addEventListener('click', () => { currentView='grid'; render(); });
 byId('tableBtn').addEventListener('click', () => { currentView='table'; render(); });
-byId('mobileToggle').addEventListener('click', () => byId('sidebar').classList.toggle('open'));
+const mobileFilters = window.matchMedia('(max-width: 1080px)');
+const sidebar = byId('sidebar');
+const main = byId('mainContent');
+const backdrop = byId('sidebarBackdrop');
+let savedPageScrollY = 0;
+
+function openFilters() {
+  if (!mobileFilters.matches || sidebar.classList.contains('open')) return;
+  savedPageScrollY = window.scrollY;
+  sidebar.inert = false;
+  sidebar.classList.add('open');
+  sidebar.setAttribute('role', 'dialog');
+  sidebar.setAttribute('aria-modal', 'true');
+  sidebar.setAttribute('aria-labelledby', 'filterDialogTitle');
+  byId('mobileToggle').setAttribute('aria-expanded', 'true');
+  backdrop.classList.add('show');
+  main.inert = true;
+  document.querySelector('.skip-link').inert = true;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${savedPageScrollY}px`;
+  document.body.style.width = '100%';
+  window.requestAnimationFrame(() => {
+    if (sidebar.classList.contains('open')) byId('closeFiltersBtn').focus({preventScroll:true});
+  });
+}
+
+function closeFilters(focusTarget='trigger') {
+  const wasOpen = sidebar.classList.contains('open');
+  sidebar.classList.remove('open');
+  sidebar.removeAttribute('role');
+  sidebar.removeAttribute('aria-modal');
+  sidebar.removeAttribute('aria-labelledby');
+  sidebar.inert = mobileFilters.matches;
+  byId('mobileToggle').setAttribute('aria-expanded', 'false');
+  backdrop.classList.remove('show');
+  main.inert = false;
+  document.querySelector('.skip-link').inert = false;
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  if (wasOpen) {
+    window.scrollTo(0, savedPageScrollY);
+    if (focusTarget === 'results' && mobileFilters.matches) {
+      byId('results').focus({preventScroll:true});
+      byId('results').scrollIntoView({block:'start', behavior:'instant'});
+    } else if (focusTarget === 'trigger' && mobileFilters.matches) {
+      byId('mobileToggle').focus({preventScroll:true});
+    }
+  }
+}
+
+function syncFilterLayout() {
+  if (!mobileFilters.matches) {
+    closeFilters('none');
+    sidebar.inert = false;
+  } else if (!sidebar.classList.contains('open')) {
+    sidebar.inert = true;
+  }
+}
+
+byId('mobileToggle').addEventListener('click', openFilters);
+byId('closeFiltersBtn').addEventListener('click', () => closeFilters());
+byId('applyFiltersBtn').addEventListener('click', () => closeFilters('results'));
+backdrop.addEventListener('click', () => closeFilters());
+mobileFilters.addEventListener('change', syncFilterLayout);
+document.addEventListener('keydown', event => {
+  if (!mobileFilters.matches || !sidebar.classList.contains('open')) return;
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeFilters();
+  } else if (event.key === 'Tab') {
+    const focusable = [...sidebar.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), a[href]')]
+      .filter(el => el.getClientRects().length > 0);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !sidebar.contains(document.activeElement))) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !sidebar.contains(document.activeElement))) {
+      event.preventDefault(); first.focus();
+    }
+  }
+});
+syncFilterLayout();
 render();
 </script>
 </body>
